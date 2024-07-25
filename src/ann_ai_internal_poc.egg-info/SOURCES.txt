@@ -1,0 +1,7 @@
+setup.py
+src/ann_ai_internal_poc.egg-info/PKG-INFO
+src/ann_ai_internal_poc.egg-info/SOURCES.txt
+src/ann_ai_internal_poc.egg-info/dependency_links.txt
+src/ann_ai_internal_poc.egg-info/entry_points.txt
+src/ann_ai_internal_poc.egg-info/requires.txt
+src/ann_ai_internal_poc.egg-info/top_level.txt
