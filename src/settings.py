@@ -23,6 +23,8 @@ class Settings(BaseSettings):
     MOUNT_DIR: str
     INDEX_ENDPOINT_NAME: str
     DEPLOYED_INDEX_ID: str
+    PROCESSOR_ID: str
+    PROCESSOR_VERSION_ID: str
 
     class Config:
         env_file = ".env"

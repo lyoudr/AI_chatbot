@@ -1,19 +1,23 @@
 import sys
+import json
+import os
+import shutil
 sys.path.append("src")
 
-import json
-from typing import List, Optional
-from google.cloud import aiplatform
-from vertexai.language_models import (
+from typing import List, Optional # noqa E402
+from vertexai.language_models import ( # noqa E402
     TextEmbeddingInput,
     TextEmbeddingModel
 )
 
 
 class Embedding:
+    def __init__(self, source_dir: str = None):
+        self.source_dir = source_dir
+
     def embed_text(
         self,
-        texts: List[str] = ["banana muffins? ", "banana bread? banana muffins?", "I like banana", "It's a great thing."],
+        texts: List[str],
         task: str = "RETRIEVAL_DOCUMENT",
         model_name: str = "text-embedding-004",
         dimensionality: Optional[int] = 100,
@@ -28,16 +32,18 @@ class Embedding:
 
     def embed_to_json(
         self,
+        id: int,
         texts: List[str],
-        source_dir: str
+        page: int = None,
     ):
-        print("length is ->", len(texts))
-        id, i, j = 1, 0, 512
-        while i < len(texts):
-            record = {"id": str(id), "embedding": texts[i:j]}
-            file_name = f'{source_dir}/output_{id}.json'
-            with open(file_name, 'w') as json_file:
-                json.dump(record, json_file, separators=(',', ':'))
-            id += 1
-            i += 512
-            j += 512
+        record = {"id": str(id), "embedding": texts}
+        file_name = f'{self.source_dir}/{page}.json'
+        # Open the file in append mode and write the new record as a JSON string
+        with open(file_name, 'a') as json_file:
+            json_file.write(json.dumps(record, separators=(',', ':')) + '\n')
+
+    def clear_dir(self):
+        for file in os.listdir(self.source_dir):
+            file_path = os.path.join(self.source_dir, file)
+            if os.path.isfile(file_path):
+                os.remove(file_path)

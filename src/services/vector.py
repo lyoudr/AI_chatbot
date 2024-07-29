@@ -29,12 +29,12 @@ def vector_search_find_neighbors(
     """
     # Initialize the Vertex AI client
     aiplatform.init(project=project, location=location)
-    print("index_endpoint_name is ->", index_endpoint_name)
+
     # Create the index endpoint instance from an existing endpoint.
     my_index_endpoint = aiplatform.MatchingEngineIndexEndpoint(
         index_endpoint_name=index_endpoint_name
     )
-    print("my_index_endpoint is ->", my_index_endpoint)
+
     # Query the index endpoint for the nearest neighbors.
     resp = my_index_endpoint.find_neighbors(
         deployed_index_id=deployed_index_id,
