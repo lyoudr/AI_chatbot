@@ -20,7 +20,6 @@ class Settings(BaseSettings):
     GCP_PROJECT_ID: str
     GCS_BUCKET_NAME: str
     REGION: str
-    MOUNT_DIR: str
     INDEX_ENDPOINT_NAME: str
     DEPLOYED_INDEX_ID: str
     PROCESSOR_ID: str

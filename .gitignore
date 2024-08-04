@@ -1,5 +1,5 @@
 *.env
 *.json
 __pycache__/
-ai_venv/
+ac_venv/
 static/

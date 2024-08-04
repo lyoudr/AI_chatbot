@@ -1,3 +1,4 @@
+from routes import chatbot
 from settings import get_settings
 
 from fastapi import FastAPI, Response  # noqa: E402
@@ -26,3 +27,5 @@ app.add_middleware(
     expose_headers=["Content-Disposition", "X-Internal-User-Email"],
 )
 app.add_middleware(GZipMiddleware, minimum_size=500)
+# include router
+app.include_router(chatbot.router)

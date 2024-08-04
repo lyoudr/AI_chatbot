@@ -36,6 +36,7 @@ class Embedding:
         texts: List[str],
         page: int = None,
     ):
+        page = 'output' if not page else page
         record = {"id": str(id), "embedding": texts}
         file_name = f'{self.source_dir}/{page}.json'
         # Open the file in append mode and write the new record as a JSON string
