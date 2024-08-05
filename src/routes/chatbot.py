@@ -1,10 +1,10 @@
 import sys
 sys.path.append("src")
 
-from fastapi import APIRouter, File, UploadFile, Depends
+from fastapi import APIRouter, File, UploadFile, Form
 
 from settings import get_settings
-from models.chatbot import ChatBotResponse
+from models.chatbot import ChatBotResponse, RAGLLMResponse
 from services.ocr import (
     process_document_ocr_sample,
     clean_text
@@ -12,6 +12,7 @@ from services.ocr import (
 from services.gcs import CloudStorage
 from services.embeddings import Embedding
 from services.vector import vector_search_find_neighbors
+from services.llm import llm
 
 import os
 import json
@@ -20,26 +21,28 @@ import pprint
 router = APIRouter(prefix="/chatbot")
 settings = get_settings()
 
+
 @router.post(
-    "/ocr",
+    "/ocr-embedding",
     tags = ["chatbot"],
-    summary = "ask question about Harry Potter",
+    summary = "ocr, embed text to cloud",
     response_model=ChatBotResponse
 )
-def chat_bot(
+async def chat_bot(
     file: UploadFile = File(None),
 ):
-    upload_dir = "/src/static"  # Define your upload directory
+    upload_dir = "/Users/annmac/Code/Ann/AI_chatbot/src/static"  # Define your upload directory
     if not os.path.exists(upload_dir):
         os.makedirs(upload_dir)
 
     file_path = os.path.join(upload_dir, "output.pdf")
 
     with open(file_path, "wb") as local_file:
-        content = file.read()  # Read the uploaded file content
+        content = await file.read()  # Read the uploaded file content
         local_file.write(content)  # Write the content to the local file
     
     # OCR pdf
+    print("settings.GCP_PROJECT_ID is ->", settings.GCP_PROJECT_ID)
     text_lines = process_document_ocr_sample(
         project_id=settings.GCP_PROJECT_ID,
         location="us",
@@ -80,17 +83,27 @@ def chat_bot(
     gcs.upload_files(
         source_dir=source_dir
     )
+    return ChatBotResponse(status = 'Upload file to cloud storage successfully.')
 
+
+@router.post(
+    "/rag_llm",
+    tags = ["chatbot"],
+    summary = "ask question about uploaded file",
+    response_model=RAGLLMResponse
+)
+async def vector_serach(question: str = Form(...)):
+    # Process the form data as needed
+    # For demonstration, let's just return the question back
+    
     # vector search
-    text_embs = {}
-    with open('src/static/output.json') as f:
-        for l in f.readlines():
-            p = json.loads(l)
-            id = p['id']
-            text_embs[id] = p['embedding']
-    ids = [2, 4]
-    if ids:
-        queries = [text_embs[id] for id in ids]
+    embed = Embedding()
+    embeded_text = embed.embed_text(
+        texts=[question],
+        task="RETRIEVAL_DOCUMENT",
+        model_name="text-embedding-004",
+        dimensionality=100
+    )
     
     # 2. vector search
     search_results = vector_search_find_neighbors(
@@ -98,8 +111,17 @@ def chat_bot(
         location=settings.REGION,
         index_endpoint_name=settings.INDEX_ENDPOINT_NAME,
         deployed_index_id=settings.DEPLOYED_INDEX_ID,
-        queries=queries,
+        queries=[embeded_text],
         num_neighbors=3
     )
     pprint.pprint(search_results)
-        
+    
+    search_results = "Adobe PDF is an ideal format \
+    for electronic document distribution as it overcomes \
+    the problems commonly encountered with electronic file sharing."
+    # 3. LLM generate response 
+    response = llm(
+        question=question,
+        vertex_search_result=search_results
+    )
+    return RAGLLMResponse(response=response)
