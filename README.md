@@ -1,16 +1,18 @@
-# ChatBot - RAG implemented
+# ChatBot - Retrieval-Augmented Generation (RAG) implemented
 
 ## Tools Used
-- OCR process
-    - Document AI
-- Embedding 
-    - GCP Text Embedding
+- Document AI
+    - Process pdf, csv text
+- GCP Text Embedding 
+    - Embedding texts to vectors
 - Vector Search
-    - vector search + cloud storage
-- LLM
-    - Gemini AI
+    - vector search + Cloud Storage
+- LLM (Gemini AI)
+    - Generate response according to vector search and prompt
 
 ## Flow
+---
+![Architecture](https://github.com/lyoudr/AI_chatbot/blob/main/rag.png)
 
 
 ## Impact
