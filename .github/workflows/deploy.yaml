@@ -33,13 +33,18 @@ jobs:
     - run: |-
         gcloud --quiet auth configure-docker
     
-    # Get the GKE credentials so we can deploy to the cluster
-    - uses: google-github-actions/get-gke-credentials@db150f2cc60d1716e61922b832eae71d2a45938f
+    - id: 'auth'
+      uses: 'google-github-actions/auth@v2'
       with:
+        project_id: ${{ secrets.GKE_PROJECT }}
+        workload_identity_provider: "projects/742937875290/locations/global/workloadIdentityPools/ann-pool/providers/ann-provider"
+    
+    # Get the GKE credentials so we can deploy to the cluster
+    - id: 'get-credentials'
+      uses: 'google-github-actions/get-gke-credentials@v2'
         project_id: ${{ secrets.GKE_PROJECT }}
         cluster_name: ${{ env.GKE_CLUSTER }}
         location: ${{ env.GKE_ZONE }}
-        service_account_key: ${{ secrets.GKE_SA_KEY }}
     
     # Build the Docker image
     - name: Build
