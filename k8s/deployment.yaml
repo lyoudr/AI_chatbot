@@ -14,13 +14,13 @@ spec:
     spec:
       containers:
       - name: aichatbot
-        image: asia-east1-docker.pkg.dev/ann-project-390401/aichatbot:v1
+        image: gcr.io/ann-project-390401/aichatbot:v1
         ports:
         - containerPort: 80
         resources:
           limits:
-            memory: "10Mi"
-            cpu: "10m"
+            memory: "2Gi"
+            cpu: "500m"
           requests:
-            memory: "5Mi"
-            cpu: "5m"
+            memory: "1Gi"
+            cpu: "250m"

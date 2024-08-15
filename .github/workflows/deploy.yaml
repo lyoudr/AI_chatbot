@@ -10,7 +10,7 @@ env:
   GKE_CLUSTER: ann-cluster
   GKE_ZONE: asia-east1
   DEPLOYMENT_NAME: aichatbot
-  IMAGE: static-site
+  IMAGE: aichatbot
 
 jobs:
   setup-build-publish-deploy:
@@ -51,14 +51,14 @@ jobs:
       run: |-
         docker build \
           --tag "gcr.io/$PROJECT_ID/$IMAGE:$GITHUB_SHA" \
-          --build-arg GITHUB_SHA="$GITHUB_SHA" \
+          --build-arg GITHUB_SHA="v1" \
           --build-arg GITHUB_REF="$GITHUB_REF" \
           .
     
     # Push the Docker image to Google Container Registry
     - name: Publish
       run: |-
-        docker push "gcr.io/$PROJECT_ID/$IMAGE:$GITHUB_SHA"
+        docker push "gcr.io/$PROJECT_ID/$IMAGE:v1"
     
     # Set up kustomize
     - name: Set up Kustomize
