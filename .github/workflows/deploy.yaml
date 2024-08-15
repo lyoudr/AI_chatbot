@@ -36,8 +36,7 @@ jobs:
     - id: 'auth'
       uses: 'google-github-actions/auth@v2'
       with:
-        project_id: ${{ secrets.GKE_PROJECT }}
-        workload_identity_provider: "projects/742937875290/locations/global/workloadIdentityPools/ann-pool/providers/ann-provider"
+        credentials_json: '${{ secrets.GCP_SA_KEY }}'
     
     # Get the GKE credentials so we can deploy to the cluster
     - id: 'get-credentials'
