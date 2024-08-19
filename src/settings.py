@@ -19,6 +19,7 @@ class Settings(BaseSettings):
     DOCS: bool = True
     GCP_PROJECT_ID: str
     GCS_BUCKET_NAME: str
+    SELF_HOST: str
     REGION: str
     INDEX_ENDPOINT_NAME: str
     DEPLOYED_INDEX_ID: str

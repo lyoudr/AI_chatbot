@@ -14,7 +14,42 @@ spec:
     spec:
       containers:
       - name: aichatbot
-        image: gcr.io/ann-project-390401/aichatbot:v1
+        image: asia-east1-docker.pkg.dev/ann-project-390401/ann-repo/aichatbot:v1
+        env:
+        - name: APP_ENV
+          valueFrom:
+            secretKeyRef:
+              name: ann-secret
+              key: APP_ENV
+        - name: GCP_PROJECT_ID
+          valueFrom:
+            secretKeyRef:
+              name: ann-secret
+              key: GCP_PROJECT_ID
+        - name: GCS_BUCKET_NAME
+          value: "ai-chatbot-4562"
+        - name: SELF_HOST
+          value: ""
+        - name: REGION
+          value: "asia-east1"
+        - name: DB_NAME
+          value: "ann"
+        - name: DB_USERNAME
+          value: "postgres"
+        - name: DB_PASSWORD
+          value: "Lqo|L)$dG|PDB?Z-"
+        - name: DB_PORT
+          value: "5433"
+        - name: DB_HOST
+          value: "127.0.0.1"
+        - name: INDEX_ENDPOINT_NAME
+          value: "abc"
+        - name: DEPLOYED_INDEX_ID
+          value: "def"
+        - name: PROCESSOR_ID
+          value: "7f40c0ad5fcf90d8"
+        - name: PROCESSOR_VERSION_ID
+          value: "pretrained-ocr-v2.0-2023-06-02"
         ports:
         - containerPort: 80
         resources:

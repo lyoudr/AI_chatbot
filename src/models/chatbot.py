@@ -7,3 +7,11 @@ class ChatBotResponse(BaseModel):
 
 class RAGLLMResponse(BaseModel):
     response: str
+
+
+class MultipleResponse(BaseModel):
+    status: str
+
+
+class MultiTasksResponse(BaseModel):
+    status: str

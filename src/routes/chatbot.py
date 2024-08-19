@@ -4,7 +4,13 @@ sys.path.append("src")
 from fastapi import APIRouter, File, UploadFile, Form
 
 from settings import get_settings
-from models.chatbot import ChatBotResponse, RAGLLMResponse
+from models.chatbot import (
+    ChatBotResponse, 
+    RAGLLMResponse,
+    MultipleResponse,
+    MultiTasksResponse
+)
+from models.request import MultipleQuestionRequest
 from services.ocr import (
     process_document_ocr_sample,
     clean_text
@@ -13,9 +19,9 @@ from services.gcs import CloudStorage
 from services.embeddings import Embedding
 from services.vector import vector_search_find_neighbors
 from services.llm import llm
+from services.cloud_tasks import create_http_task
 
 import os
-import json
 import pprint
 
 router = APIRouter(prefix="/chatbot")
@@ -90,7 +96,7 @@ async def chat_bot(
     "/rag_llm",
     tags = ["chatbot"],
     summary = "ask question about uploaded file",
-    response_model=RAGLLMResponse
+    response_model = RAGLLMResponse
 )
 async def vector_serach(question: str = Form(...)):
     # Process the form data as needed
@@ -119,9 +125,29 @@ async def vector_serach(question: str = Form(...)):
     search_results = "Adobe PDF is an ideal format \
     for electronic document distribution as it overcomes \
     the problems commonly encountered with electronic file sharing."
+    
     # 3. LLM generate response 
     response = llm(
         question=question,
         vertex_search_result=search_results
     )
     return RAGLLMResponse(response=response)
+
+
+@router.post(
+    "/handle_multiple",
+    tags = ["chatbot"],
+    summary = "handle multiple tasks at one time",
+    response_model = MultipleResponse
+)
+def handle_multiple_question(
+    payload: MultipleQuestionRequest
+):
+    create_http_task(
+        project=settings.GCP_PROJECT_ID,
+        location=settings.REGION,
+        queue='llm_question',
+        url=settings.SELF_HOST,
+        json_payload=payload
+    )
+    return MultiTasksResponse(status = 'ok')
