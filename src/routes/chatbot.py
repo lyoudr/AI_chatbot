@@ -10,7 +10,10 @@ from models.chatbot import (
     MultipleResponse,
     MultiTasksResponse
 )
-from models.request import MultipleQuestionRequest
+from models.request import (
+    MultipleQuestionRequest,
+    RAGLLMQuestionRequest
+)
 from services.ocr import (
     process_document_ocr_sample,
     clean_text
@@ -98,7 +101,9 @@ async def chat_bot(
     summary = "ask question about uploaded file",
     response_model = RAGLLMResponse
 )
-async def vector_serach(question: str = Form(...)):
+async def vector_serach(
+    question: RAGLLMQuestionRequest
+):
     # Process the form data as needed
     # For demonstration, let's just return the question back
     
@@ -146,8 +151,8 @@ def handle_multiple_question(
     create_http_task(
         project=settings.GCP_PROJECT_ID,
         location=settings.REGION,
-        queue='llm_question',
-        url=settings.SELF_HOST,
-        json_payload=payload
+        queue='llm-question',
+        url=f"{settings.SELF_HOST}/rag_llm",
+        json_payload=payload.dict()
     )
     return MultiTasksResponse(status = 'ok')

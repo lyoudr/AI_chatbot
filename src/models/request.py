@@ -3,4 +3,8 @@ from typing import List
 
 
 class MultipleQuestionRequest(BaseModel):
-    questions: List[str]
+    question: str
+
+
+class RAGLLMQuestionRequest(BaseModel):
+    question: str

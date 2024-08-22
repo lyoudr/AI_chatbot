@@ -10,13 +10,14 @@ google-auth==2.32.0
 google-cloud-aiplatform==1.59.0
 google-cloud-bigquery==3.25.0
 google-cloud-core==2.4.1
+google-cloud-documentai==2.29.2
 google-cloud-resource-manager==1.12.4
 google-cloud-storage==2.18.0
+google-cloud-tasks==2.16.5
 google-crc32c==1.5.0
 google-resumable-media==2.7.1
 googleapis-common-protos==1.63.2
 grpc-google-iam-v1==0.13.1
-google-cloud-documentai==2.29.2
 
 # pdf
 PyMuPDF==1.24.9
@@ -24,3 +25,6 @@ PyMuPDFb==1.24.9
 
 # alembic
 alembic==1.13.2
+
+# kafka
+aiokafka==0.11.0

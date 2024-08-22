@@ -25,6 +25,9 @@ class Settings(BaseSettings):
     DEPLOYED_INDEX_ID: str
     PROCESSOR_ID: str
     PROCESSOR_VERSION_ID: str
+    # Kafka settings
+    KAFKA_BOOTSTRAP_SERVERS: str = "localhost:9092"
+    KAFKA_TOPIC: str = "example-topic"
 
     class Config:
         env_file = ".env"

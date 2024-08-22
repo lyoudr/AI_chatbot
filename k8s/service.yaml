@@ -3,7 +3,7 @@ kind: Service
 metadata:
   name: aichatbot-service
 spec:
-  type: NodePort
+  type: LoadBalancer
   selector:
     app: aichatbot
   ports:

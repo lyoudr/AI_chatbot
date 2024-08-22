@@ -14,7 +14,8 @@ spec:
     spec:
       containers:
       - name: aichatbot
-        image: asia-east1-docker.pkg.dev/ann-project-390401/ann-repo/aichatbot:v1
+        image: asia-east1-docker.pkg.dev/ann-project-390401/ann-repo/aichatbot:latest
+        imagePullPolicy: Always
         env:
         - name: APP_ENV
           valueFrom:
