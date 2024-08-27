@@ -1,7 +1,8 @@
 import sys
 sys.path.append("src")
 
-from fastapi import APIRouter, File, UploadFile, Form
+from fastapi import APIRouter, File, UploadFile, Depends
+from sqlalchemy.orm  import Session
 
 from settings import get_settings
 from models.chatbot import (
@@ -23,6 +24,8 @@ from services.embeddings import Embedding
 from services.vector import vector_search_find_neighbors
 from services.llm import llm
 from services.cloud_tasks import create_http_task
+from repositories.chatbot import create_chat_bot_log
+from database import get_db_session
 
 import os
 import pprint
@@ -102,11 +105,13 @@ async def chat_bot(
     response_model = RAGLLMResponse
 )
 async def vector_serach(
-    question: RAGLLMQuestionRequest
+    question: RAGLLMQuestionRequest,
+    db: Session = Depends(get_db_session)
 ):
     # Process the form data as needed
     # For demonstration, let's just return the question back
-    
+    # create chat bot log
+    create_chat_bot_log(db, question)
     # vector search
     embed = Embedding()
     embeded_text = embed.embed_text(

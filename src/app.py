@@ -33,48 +33,48 @@ app.add_middleware(GZipMiddleware, minimum_size=500)
 app.include_router(chatbot.router)
 
 # Initialize Kafka producer and consumer globally
-producer = None
-consumer_task = None
+# producer = None
+# consumer_task = None
 
-@app.on_event("startup")
-async def startup_event():
-    global producer, consumer_task
-    # Initialize producer
-    producer = AIOKafkaProducer(
-        bootstrap_servers=settings.KAFKA_BOOTSTRAP_SERVERS
-    )
-    await producer.start()
-    # Start the Kafka consumer
-    consumer_task = asyncio.create_task(consume())
+# @app.on_event("startup")
+# async def startup_event():
+#     global producer, consumer_task
+#     # Initialize producer
+#     producer = AIOKafkaProducer(
+#         bootstrap_servers=settings.KAFKA_BOOTSTRAP_SERVERS
+#     )
+#     await producer.start()
+#     # Start the Kafka consumer
+#     consumer_task = asyncio.create_task(consume())
 
-@app.on_event("shutdown")
-async def shutdown_event():
-    global producer
-    # Stop the Kafka producer
-    await producer.stop()
+# @app.on_event("shutdown")
+# async def shutdown_event():
+#     global producer
+#     # Stop the Kafka producer
+#     await producer.stop()
 
-    # Cancel the consumer task
-    consumer_task.cancel()
+#     # Cancel the consumer task
+#     consumer_task.cancel()
 
-@app.post("/send")
-async def send_message(message: str):
-    await producer.send_and_wait(
-        settings.KAFKA_TOPIC, 
-        message.encode("utf-8")
-    )
-    return {"status": "Message sent"}
+# @app.post("/send")
+# async def send_message(message: str):
+#     await producer.send_and_wait(
+#         settings.KAFKA_TOPIC, 
+#         message.encode("utf-8")
+#     )
+#     return {"status": "Message sent"}
 
 
-async def consume():
-    consumer = AIOKafkaConsumer(
-        settings.KAFKA_TOPIC,
-        bootstrap_servers=settings.KAFKA_BOOTSTRAP_SERVERS,
-        group_id="fastapi-consumer-group",
-        auto_offset_reset="earliest"
-    )
-    await consumer.start()
-    try:
-        async for msg in consumer:
-            print(f"Consumed message: {msg.value.decode('utf-8')}")
-    finally:
-        await consumer.stop()
+# async def consume():
+#     consumer = AIOKafkaConsumer(
+#         settings.KAFKA_TOPIC,
+#         bootstrap_servers=settings.KAFKA_BOOTSTRAP_SERVERS,
+#         group_id="fastapi-consumer-group",
+#         auto_offset_reset="earliest"
+#     )
+#     await consumer.start()
+#     try:
+#         async for msg in consumer:
+#             print(f"Consumed message: {msg.value.decode('utf-8')}")
+#     finally:
+#         await consumer.stop()

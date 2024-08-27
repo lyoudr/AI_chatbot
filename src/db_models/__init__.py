@@ -16,3 +16,5 @@ def to_dict(self):
 
 
 Base.to_dict = to_dict
+
+from .chat import *
