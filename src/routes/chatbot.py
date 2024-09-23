@@ -2,7 +2,9 @@ import sys
 sys.path.append("src")
 
 from fastapi import APIRouter, File, UploadFile, Depends
+from fastapi.security import OAuth2PasswordBearer
 from sqlalchemy.orm  import Session
+from typing import Annotated
 
 from settings import get_settings
 from models.chatbot import (
@@ -32,7 +34,7 @@ import pprint
 
 router = APIRouter(prefix="/chatbot")
 settings = get_settings()
-
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 @router.post(
     "/ocr-embedding",
@@ -41,6 +43,7 @@ settings = get_settings()
     response_model=ChatBotResponse
 )
 async def chat_bot(
+    token: Annotated[str, Depends(oauth2_scheme)],
     file: UploadFile = File(None),
 ):
     upload_dir = "/Users/annmac/Code/Ann/AI_chatbot/src/static"  # Define your upload directory

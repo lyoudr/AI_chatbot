@@ -1,19 +1,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: aichatbot
+  name: aichatbotnew
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: aichatbot
+      app: aichatbotnew
   template:
     metadata:
       labels:
-        app: aichatbot
+        app: aichatbotnew
     spec:
       containers:
-      - name: aichatbot
+      - name: aichatbotnew
         image: asia-east1-docker.pkg.dev/ann-project-390401/ann-repo/aichatbot:latest
         imagePullPolicy: Always
         env:
@@ -27,6 +27,11 @@ spec:
             secretKeyRef:
               name: ann-secret
               key: GCP_PROJECT_ID
+        - name: SECRET_KEY
+          valueFrom:
+            secretKeyRef:
+              name: ann-secret
+              key: SECRET_KEY
         - name: GCS_BUCKET_NAME
           value: "ai-chatbot-4562"
         - name: SELF_HOST

@@ -28,3 +28,7 @@ alembic==1.13.2
 
 # kafka
 aiokafka==0.11.0
+
+# PyJWT
+PyJWT==2.9.0
+passlib==1.7.4

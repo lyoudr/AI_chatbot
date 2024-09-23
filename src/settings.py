@@ -11,6 +11,7 @@ mode = os.getenv("MODE", "local")
 class Settings(BaseSettings):
     APP_ENV: str = mode
     APP_VERSION: str = "0.0.0"
+    SECRET_KEY: str
     DB_HOST: str = "localhost"
     DB_PORT: int = 3306
     DB_NAME: str = None
@@ -26,7 +27,7 @@ class Settings(BaseSettings):
     PROCESSOR_ID: str
     PROCESSOR_VERSION_ID: str
     # Kafka settings
-    KAFKA_BOOTSTRAP_SERVERS: str = "localhost:9092"
+    KAFKA_BOOTSTRAP_SERVERS: str = "bootstrap.test-cluster.us-central1.managedkafka.ann-project-390401.cloud.goog:9092"
     KAFKA_TOPIC: str = "example-topic"
 
     class Config:
