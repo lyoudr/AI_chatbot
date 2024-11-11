@@ -15,6 +15,7 @@ class Settings(BaseSettings):
     DB_HOST: str = "localhost"
     DB_PORT: int = 3306
     DB_NAME: str = None
+    TEST_DB_NAME: str = None
     DB_USERNAME: str = None
     DB_PASSWORD: str = None
     DOCS: bool = True
@@ -29,6 +30,8 @@ class Settings(BaseSettings):
     # Kafka settings
     KAFKA_BOOTSTRAP_SERVERS: str = "bootstrap.test-cluster.us-central1.managedkafka.ann-project-390401.cloud.goog:9092"
     KAFKA_TOPIC: str = "example-topic"
+    # RabbitMQ
+    RABBITMQ_URL: str = "amqp://guest:guest@localhost/"
 
     class Config:
         env_file = ".env"
