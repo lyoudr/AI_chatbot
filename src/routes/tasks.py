@@ -1,8 +1,14 @@
 from fastapi import BackgroundTasks
 from fastapi import APIRouter
 
-from services.message_queue import publish_message
-from models.response import SendTaskResponse
+from services.message_queue import (
+    publish_message,
+    start_consumer,
+)
+from models.response import (
+    SendTaskResponse,
+    ReceiveTaskResponse
+)
 
 router = APIRouter(prefix="/tasks")
 
@@ -19,3 +25,12 @@ async def send_task(
         message
     )
     return SendTaskResponse(status = "Create task successfully.")
+
+@router.get(
+    "/get_message"
+)
+async def start_consumer_route():
+    await start_consumer()
+    return ReceiveTaskResponse(
+        status = "Receive message successfully."
+    )

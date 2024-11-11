@@ -1,6 +1,6 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from settings import get_settings, is_testing()
+from settings import get_settings, is_testing
 
 settings = get_settings()
 

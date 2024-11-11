@@ -1,5 +1,4 @@
 # flaske8: noqa
-import psycopg2
 import subprocess
 import sys
 
