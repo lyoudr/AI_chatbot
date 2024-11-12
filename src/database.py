@@ -1,6 +1,5 @@
 from sqlalchemy import Table, MetaData, text, create_engine
 from sqlalchemy.orm import Session, sessionmaker
-import sqlalchemy as sa
 
 from settings import get_settings, is_testing
 
@@ -17,6 +16,7 @@ db_name = settings.TEST_DB_NAME if is_testing() else settings.DB_NAME
 SQLALCHEMY_DATABASE_URL = (
     f"postgresql+psycopg2://{db_user}:{db_pass}@{db_host}:{db_port}/{db_name}"
 )
+print("db url is ->", SQLALCHEMY_DATABASE_URL)
 
 engine = create_engine(
     SQLALCHEMY_DATABASE_URL,

@@ -10,7 +10,8 @@
 - LLM (Gemini AI)
     - Generate response according to vector search and prompt
 - DataBase
-    - PostgreSQL
+    - SQL-Database PostgreSQL
+    - NoSQL-Database Cassandra
 
 ## Flow
 ---
@@ -21,6 +22,15 @@
 - Kubernetes
     - Service: aichatbot-service
         - I used a LoadBalancer service type, which assigns an external IP, allowing the application to be accessed directly via that IP.
+
+## Asynchronous Task
+---
+- RabbitMQ
+    - Use RabbitMQ to manage asynchronous background tasks, enabling concurrent task processing without interrupting or detaching from the current application.
+
+## Logging
+
+I implemented Python logging within middleware to capture request and response details, storing this information in a Cassandra database for security monitoring and request analysis.
 
 ## Impact
 
