@@ -3,6 +3,13 @@ from fastapi import status
 
 from db_models.user import User
 from utils.errors import CustomException
+from database import get_db_session
+
+
+def batch_insert(data: list):
+    db = next(get_db_session())
+    db.bulk_insert_mappings(User, data)
+    db.commit()
 
 
 def get_user(db: Session, username: str):

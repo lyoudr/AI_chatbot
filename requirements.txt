@@ -3,7 +3,7 @@ fastapi-cli==0.0.4
 uvicorn==0.30.3
 pydantic==1.10.4
 psycopg2-binary==2.9.9
-
+pytest==8.3.3
 # google
 google-api-core==2.19.1
 google-auth==2.32.0
