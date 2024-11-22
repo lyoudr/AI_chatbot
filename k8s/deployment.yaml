@@ -1,19 +1,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: aichatbotnew
+  name: aichatbot
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: aichatbotnew
+      app: aichatbot
   template:
     metadata:
       labels:
-        app: aichatbotnew
+        app: aichatbot
     spec:
       containers:
-      - name: aichatbotnew
+      - name: aichatbot
         image: asia-east1-docker.pkg.dev/ann-project-390401/ann-repo/aichatbot:latest
         imagePullPolicy: Always
         env:

@@ -5,7 +5,7 @@ metadata:
 spec:
   type: LoadBalancer
   selector:
-    app: aichatbotnew
+    app: aichatbot
   ports:
   - protocol: TCP
     port: 80
