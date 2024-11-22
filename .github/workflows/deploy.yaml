@@ -7,7 +7,7 @@ on:
 
 env:
   PROJECT_ID: ${{ secrets.GKE_PROJECT }}
-  GKE_CLUSTER: ann-cluster
+  GKE_CLUSTER: autopilot-cluster-1
   GKE_ZONE: asia-east1
   DEPLOYMENT_NAME: aichatbot
   IMAGE: aichatbot
